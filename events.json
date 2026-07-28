@@ -1,0 +1,23 @@
+[
+  {
+    "repo": "octo-project/ai-assistant",
+    "description": "A lightweight coding assistant for quick authoring and editing tasks.",
+    "language": "JavaScript",
+    "stars": 128,
+    "date": "2026-07-25"
+  },
+  {
+    "repo": "design-system/ui-kit",
+    "description": "Reusable interface components for building polished product experiences.",
+    "language": "TypeScript",
+    "stars": 92,
+    "date": "2026-07-18"
+  },
+  {
+    "repo": "data-tools/insight-lab",
+    "description": "A notebooks-first workspace for exploring metrics and dashboards.",
+    "language": "Python",
+    "stars": 74,
+    "date": "2026-07-08"
+  }
+]
