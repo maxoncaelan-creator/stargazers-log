@@ -25,6 +25,11 @@ p {
   color: #656d76;
 }
 
+#events-status {
+  margin-bottom: 1rem;
+  color: #57606a;
+}
+
 #events-list {
   list-style: none;
   padding: 0;

@@ -8,11 +8,12 @@
   </head>
   <body>
     <main>
-      <h1>Stargazers log</h1>
-      <p>A log of the repositories I've starred.</p>
-      <ul id="events-list"></ul>
+      <h1 id="page-title">Stargazers log</h1>
+      <p id="page-description">A log of the repositories I've starred.</p>
+      <p id="events-status" role="status" aria-live="polite">Loading starred repositories…</p>
+      <ul id="events-list" aria-labelledby="page-title"></ul>
     </main>
 
-    <script src="script.js"></script>
+    <script src="script.js" defer></script>
   </body>
 </html>
