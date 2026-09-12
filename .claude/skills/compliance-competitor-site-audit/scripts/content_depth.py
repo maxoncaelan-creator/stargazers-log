@@ -38,6 +38,10 @@ def main():
     ap = argparse.ArgumentParser(description="Content depth + ranking footprint proxies")
     ap.add_argument("fetched_dir")
     ap.add_argument("--out")
+    ap.add_argument("--target-type", choices=["clinic", "agency"], default="agency",
+                    help="clinic suppresses the AggregateRating recommendation, because "
+                         "rating markup on a regulated health service may itself republish "
+                         "testimonials as advertising")
     args = ap.parse_args()
 
     man = json.load(open(os.path.join(args.fetched_dir, "manifest.json")))
@@ -100,9 +104,11 @@ def main():
         dates += re.findall(r'(?:datePublished|article:published_time)"[^"]*"?\s*[:=]\s*"(\d{4}-\d{2})', html)
 
     res["schema_types"] = dict(schema_types.most_common())
-    res["schema_missing_high_value"] = [
-        k for k in ("AggregateRating", "Service", "FAQPage", "BreadcrumbList")
-        if k not in schema_types]
+    wanted = ["Service", "FAQPage", "BreadcrumbList"]
+    if args.target_type != "clinic":
+        wanted.insert(0, "AggregateRating")
+    res["target_type"] = args.target_type
+    res["schema_missing_high_value"] = [k for k in wanted if k not in schema_types]
     res["schema_notes"] = {k: SCHEMA_VALUE[k] for k in schema_types if k in SCHEMA_VALUE}
     res["internal_link_targets"] = len(internal)
     res["internal_links_total"] = sum(internal.values())
@@ -146,6 +152,9 @@ def main():
     if "Review" in res["schema_types"] or "AggregateRating" in res["schema_types"]:
         print("  ** Review/AggregateRating markup present — on a regulated health service "
               "site this may itself be a s.133(1)(c) testimonial issue. Check target type.")
+    elif args.target_type == "clinic":
+        print("  (AggregateRating deliberately NOT recommended: on a regulated health service "
+              "star-rating markup can republish patient testimonials as advertising.)")
     print(f"  H1: {res['total_h1']} total | {res['pages_without_h1']} pages with none, "
           f"{res['pages_multiple_h1']} with multiple")
     print(f"  missing meta descriptions: {res['missing_meta_description']}")
