@@ -7,7 +7,7 @@ preload/media-query mismatches that break mobile LCP, and staging domains
 leaking into production markup. Generic "score the site" output is much less
 useful than naming a specific broken thing.
 """
-import argparse, json, os, re, subprocess, sys
+import argparse, json, os, re, subprocess, sys, time
 import urllib.parse as up
 from collections import defaultdict
 
@@ -42,11 +42,22 @@ PLUGINS = [
 ]
 
 
-def sh(cmd, timeout=60):
-    try:
-        return subprocess.run(cmd, capture_output=True, timeout=timeout).stdout.decode("utf8", "replace")
-    except Exception:
-        return ""
+def sh(cmd, timeout=60, retries=3):
+    """Run a command, retrying on empty output.
+
+    Transient connection resets otherwise abort an audit on a site that is
+    perfectly reachable a second later.
+    """
+    for attempt in range(retries):
+        try:
+            out = subprocess.run(cmd, capture_output=True, timeout=timeout).stdout.decode("utf8", "replace")
+        except Exception:
+            out = ""
+        if out:
+            return out
+        if attempt < retries - 1:
+            time.sleep(1.5 * (attempt + 1))
+    return ""
 
 
 def timing(url, runs=3):

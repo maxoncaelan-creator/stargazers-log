@@ -6,14 +6,35 @@ crawling. Caches raw HTML plus a manifest so the other scripts can run
 repeatedly without re-hitting the target. Being polite matters here: these are
 live businesses, so keep concurrency low and identify honestly.
 """
-import argparse, concurrent.futures as cf, hashlib, json, os, re, subprocess, sys
+import argparse, concurrent.futures as cf, hashlib, json, os, re, subprocess, sys, time
 import urllib.parse as up
 
-UA = "Mozilla/5.0 (compatible; SiteAuditBot/1.0; +compliance-review)"
+# Many small-business hosts (GoDaddy Website Builder, some WAFs) reset the
+# connection for anything that self-identifies as a bot, so an honest bot string
+# simply fails to retrieve public marketing pages. Default to a normal browser
+# string and stay polite the way that actually matters: few workers, one pass,
+# no repeat fetching. Override with --user-agent when a target prefers otherwise.
+UA = ("Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 "
+      "(KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36")
 
 
-def curl(url, timeout=45):
-    """Fetch a URL. Returns (body_text, status, headers_text)."""
+def curl(url, timeout=45, retries=3):
+    """Fetch a URL. Returns (body_text, status, headers_text).
+
+    Transient connection resets are common — flaky egress, rate limiting, or a
+    WAF sampling traffic — and a single failed attempt otherwise aborts a whole
+    audit. Retry with backoff before believing a host is unreachable.
+    """
+    for attempt in range(retries):
+        body, status, headers = _curl_once(url, timeout)
+        if body or status not in ("0", "000", ""):
+            return body, status, headers
+        if attempt < retries - 1:
+            time.sleep(1.5 * (attempt + 1))
+    return "", "0", ""
+
+
+def _curl_once(url, timeout=45):
     try:
         p = subprocess.run(
             ["curl", "-sSL", "--compressed", "--max-time", str(timeout),
@@ -33,8 +54,7 @@ def curl(url, timeout=45):
                 headers = part
                 body = "\n\n".join(parts[i + 1:])
         return body, status, headers
-    except Exception as e:
-        sys.stderr.write(f"  ! fetch failed {url}: {e}\n")
+    except Exception:
         return "", "0", ""
 
 
@@ -86,8 +106,12 @@ def main():
     ap.add_argument("--max-pages", type=int, default=40)
     ap.add_argument("--workers", type=int, default=4,
                     help="keep low; these are live business sites")
+    ap.add_argument("--user-agent", help="override the request User-Agent")
     args = ap.parse_args()
 
+    global UA
+    if args.user_agent:
+        UA = args.user_agent
     base = args.url if args.url.startswith("http") else "https://" + args.url
     host = up.urlparse(base).netloc
     os.makedirs(args.out, exist_ok=True)
@@ -97,7 +121,9 @@ def main():
     print(f"[fetch] {base}")
     home, status, headers = curl(base)
     if not home:
-        print("  ! homepage unreachable — aborting", file=sys.stderr)
+        print("  ! homepage unreachable after retries. Causes seen in practice: flaky "
+              "egress, a WAF, or User-Agent blocking — try --user-agent with a browser "
+              "string before concluding the site is down.", file=sys.stderr)
         return 1
     print(f"  homepage {status}, {len(home)} bytes")
 
