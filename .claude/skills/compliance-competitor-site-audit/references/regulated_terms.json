@@ -1,0 +1,139 @@
+{
+  "_meta": {
+    "jurisdiction": "Australia",
+    "last_reviewed": "2026-09",
+    "sources": [
+      "Health Practitioner Regulation National Law s.133",
+      "AHPRA Guidelines for advertising a regulated health service",
+      "TGA Therapeutic Goods Advertising Code / advertising health services FAQ",
+      "TGA Operation Redress audit (Mar-Apr 2025)"
+    ],
+    "note": "Term matches are INDICATORS requiring human review, not determinations of breach. AHPRA enforcement is risk-based and context matters."
+  },
+
+  "tga_s4_branded": {
+    "severity": "high",
+    "why": "Schedule 4 prescription-only medicines cannot be advertised to the public in Australia. Naming a brand is the clearest form of breach and is what the TGA's Operation Redress audit counted. 'Botox' appeared 2,983 times across the 98 non-compliant sites it found.",
+    "terms": [
+      "botox", "dysport", "xeomin", "jeuveau", "azzalure", "bocouture", "letybo", "daxxify",
+      "juvederm", "restylane", "teosyal", "radiesse", "sculptra", "profhilo", "belotero",
+      "stylage", "perlane", "ellanse", "aliaxin", "revanesse", "saypha", "definisse",
+      "ozempic", "wegovy", "saxenda", "mounjaro", "zepbound", "trulicity", "victoza", "rybelsus",
+      "spravato", "roaccutane", "accutane", "propecia", "latisse", "viagra", "cialis",
+      "kybella", "belkyra"
+    ]
+  },
+
+  "tga_s4_generic": {
+    "severity": "high",
+    "why": "The TGA treats generic substance names and active ingredients the same as brand names. Acronyms, nicknames and hashtags count too if a consumer would read them as referring to the substance.",
+    "terms": [
+      "botulinum", "botulinum toxin", "type a toxin",
+      "semaglutide", "tirzepatide", "liraglutide", "glp-1", "glp1",
+      "isotretinoin", "finasteride", "minoxidil", "bimatoprost", "deoxycholic acid",
+      "sildenafil", "tadalafil", "esketamine", "ketamine",
+      "medicinal cannabis", "medical cannabis", "cbd oil", "thc",
+      "testosterone replacement", "trt", "compounded peptide", "peptide therapy"
+    ]
+  },
+
+  "tga_s4_slang": {
+    "severity": "high",
+    "why": "The TGA explicitly names slang, abbreviations and hashtags as breaches. Operation Redress counted 435 uses of Botox slang variants alone.",
+    "terms": [
+      "brotox", "baby botox", "babytox", "traptox", "scrotox", "haytox", "jawtox",
+      "tox appointment", "skinny jab", "skinny pen", "weight loss jab"
+    ]
+  },
+
+  "tga_service_descriptors": {
+    "severity": "medium",
+    "why": "The TGA previously permitted indirect descriptors like 'wrinkle reducing injections' when promoting a service. That position has tightened. 'Dermal filler' was the single most-counted flagged term in Operation Redress at 31,874 uses. Treat these as likely-problematic rather than certain.",
+    "terms": [
+      "dermal filler", "dermal fillers", "lip filler", "lip fillers", "cheek filler",
+      "hyaluronic acid filler", "ha filler", "cosmetic injectable", "cosmetic injectables",
+      "anti-wrinkle injection", "anti wrinkle injection", "antiwrinkle injection",
+      "wrinkle relaxer", "muscle relaxant injection", "wrinkle reducing injection",
+      "injectable treatment", "lip flip", "liquid facelift", "fat dissolving injection"
+    ]
+  },
+
+  "ahpra_testimonial": {
+    "severity": "high",
+    "why": "s.133(1)(c) prohibits using testimonials about clinical aspects of a regulated health service in advertising. This is the single most common failure, and the one generalist marketers walk clients into because review widgets are their default playbook. Unsolicited reviews on third-party sites the practitioner does not control are treated differently — the breach is USING them in advertising.",
+    "terms": [
+      "testimonial", "testimonials", "patient story", "patient stories",
+      "success story", "success stories", "what our patients say", "what our clients say",
+      "hear from our patients", "patient feedback", "patient reviews", "client reviews",
+      "what patients say", "read our reviews", "happy patients", "satisfied patients"
+    ]
+  },
+
+  "ahpra_review_widgets": {
+    "severity": "high",
+    "why": "An embedded review widget on a regulated health service site republishes testimonials as advertising. Detected from raw HTML rather than visible text because the vendor name appears in script/iframe sources.",
+    "terms": [
+      "trustindex", "birdeye", "elfsight", "reviewsonmyweb", "trustpilot", "podium",
+      "nicejob", "grade.us", "reputon", "embedsocial", "taggbox", "sociablekit",
+      "widgetpack", "reviewsio", "yotpo", "stamped.io", "shopper approved",
+      "google-reviews-widget", "reviewsWidget", "wp-google-reviews", "reviews-feed"
+    ],
+    "scan_raw_html": true
+  },
+
+  "ahpra_before_after": {
+    "severity": "medium",
+    "why": "Before/after imagery is heavily restricted — it must be genuine, comparable (same lighting/angle/preparation), carry appropriate disclaimers, and not create unreasonable expectation. Cosmetic procedures carry additional requirements post-2023.",
+    "terms": [
+      "before and after", "before & after", "before/after", "before-and-after",
+      "b&a gallery", "results gallery", "patient gallery", "transformation gallery",
+      "my transformation", "see the results", "real results"
+    ]
+  },
+
+  "ahpra_unreasonable_expectation": {
+    "severity": "medium",
+    "why": "s.133(1)(d) prohibits advertising that creates an unreasonable expectation of beneficial treatment. Superlatives and absolute outcome claims are the usual trigger. Context matters heavily — 'best' in 'best practice' is fine, so review matches rather than counting them.",
+    "terms": [
+      "painless", "pain free", "pain-free", "no downtime", "zero downtime",
+      "guaranteed results", "guarantee results", "100% safe", "completely safe",
+      "risk free", "risk-free", "permanent results", "instant results",
+      "miracle", "life changing", "life-changing", "flawless results",
+      "safest", "cure for", "cures", "world's best", "world class",
+      "number 1 clinic", "#1 clinic", "best clinic", "best dentist", "best surgeon",
+      "top rated", "award winning"
+    ]
+  },
+
+  "ahpra_inducement": {
+    "severity": "review",
+    "why": "s.133(1)(b) prohibits offering a gift, discount or inducement WITHOUT clearly stating the terms and conditions. The offer itself is not the breach — the missing terms are. These matches always need a human to check whether terms are present and visible.",
+    "terms": [
+      "free consultation", "free consult", "free assessment", "free scan",
+      "% off", "discount", "special offer", "limited time", "limited offer",
+      "book now and save", "bonus", "giveaway", "win a", "competition",
+      "gift card", "voucher", "no gap", "bulk billed cosmetic"
+    ]
+  },
+
+  "ahpra_title_protection": {
+    "severity": "medium",
+    "why": "Protected titles and specialist registration were tightened after the 2023 cosmetic surgery reforms. 'Cosmetic surgeon' in particular is now restricted, and US-style credential language misleads Australian consumers.",
+    "terms": [
+      "cosmetic surgeon", "board certified", "board-certified",
+      "specialist dermatologist", "specialist cosmetic", "fellowship trained",
+      "world renowned surgeon"
+    ]
+  },
+
+  "agency_compliance_claims": {
+    "severity": "info",
+    "why": "When auditing a competitor AGENCY rather than a clinic, these phrases mark the positioning they are claiming. Every specialist in this market claims compliance, so the claim itself is not a differentiator — it is the thing to test against their client work.",
+    "terms": [
+      "ahpra compliant", "ahpra-compliant", "tga compliant", "tga-compliant",
+      "ahpra compliance", "tga compliance", "compliance guaranteed",
+      "compliant marketing", "healthcare compliance", "regulatory compliance",
+      "never had a breach", "zero breaches", "no breaches"
+    ]
+  }
+}
