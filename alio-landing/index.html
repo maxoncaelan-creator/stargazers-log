@@ -1,0 +1,836 @@
+<!doctype html>
+<html lang="en-AU">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="description" content="Alio! Brand Studios builds brands, websites and referral kits for Australian allied health clinics and service businesses. AHPRA-safe, referral-ready, live in six weeks.">
+<link rel="icon" href="assets/alio-mark.png">
+<style>
+:root{color-scheme:light dark;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+body{margin:0}
+img{max-width:100%}
+[hidden]{display:none!important}
+</style>
+<title>Alio! Brand Studios</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700&family=Fredoka:wght@400;500;600;700&display=swap">
+
+<style>
+/* ── tokens ─────────────────────────────────────────────────────────── */
+:root{
+  --ink:#14201F;
+  --forest:#014633;
+  --forest-deep:#002A1E;
+  --moss:#285A44;
+  --pistachio:#E1EEBB;
+  --lime:#EFFEB8;
+  --zest:#FC5A1E;
+
+  --paper:#F2F4E6;
+  --surface:#FFFFFF;
+  --surface-2:#FAFBF2;
+  --text:#14201F;
+  --text-soft:#4A5A50;
+  --line:#14201F;
+  --rule:rgba(20,32,31,.16);
+
+  --on-dark:#EEF5DE;
+  --on-dark-soft:#A9C4AE;
+
+  --kl:2.5px;
+  --shadow:5px 5px 0 var(--ink);
+  --shadow-sm:3px 3px 0 var(--ink);
+  --shadow-lg:8px 8px 0 var(--ink);
+
+  --r-lg:22px;
+  --r-md:14px;
+  --r-pill:999px;
+
+  --display:"Fredoka","Trebuchet MS",system-ui,sans-serif;
+  --body:"Archivo","Helvetica Neue",Arial,sans-serif;
+
+  --wrap:1120px;
+  --gutter:22px;
+}
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]){
+    --paper:#0C1712;
+    --surface:#122219;
+    --surface-2:#0F1D16;
+    --text:#EEF5DE;
+    --text-soft:#9DB8A4;
+    --line:#000000;
+    --rule:rgba(225,238,187,.18);
+    --forest-deep:#03150E;
+  }
+}
+:root[data-theme="dark"]{
+  --paper:#0C1712;
+  --surface:#122219;
+  --surface-2:#0F1D16;
+  --text:#EEF5DE;
+  --text-soft:#9DB8A4;
+  --line:#000000;
+  --rule:rgba(225,238,187,.18);
+  --forest-deep:#03150E;
+}
+
+/* ── base ───────────────────────────────────────────────────────────── */
+body{
+  margin:0;
+  background:var(--paper);
+  color:var(--text);
+  font-family:var(--body);
+  font-size:17px;
+  line-height:1.62;
+  -webkit-font-smoothing:antialiased;
+  overflow-x:hidden;
+}
+*,*::before,*::after{box-sizing:border-box}
+img{max-width:100%;display:block}
+a{color:inherit}
+h1,h2,h3,h4{font-family:var(--display);margin:0;text-wrap:balance;letter-spacing:-.015em}
+p{margin:0}
+:focus-visible{outline:3px solid var(--zest);outline-offset:3px;border-radius:4px}
+
+.band{width:100%;padding-inline:var(--gutter);padding-block:clamp(64px,8vw,116px)}
+.wrap{max-width:var(--wrap);margin-inline:auto}
+.band--forest{background:var(--forest-deep);color:var(--on-dark)}
+.band--paper{background:var(--paper)}
+
+.label{
+  font-family:var(--body);font-size:.69rem;font-weight:700;
+  text-transform:uppercase;letter-spacing:.15em;margin:0;
+}
+.h2{font-size:clamp(2rem,4.5vw,3.3rem);font-weight:600;line-height:1.02}
+.h3{font-family:var(--display);font-size:1.22rem;font-weight:600;line-height:1.25}
+.lead{font-size:clamp(1.06rem,1.6vw,1.24rem);line-height:1.6;color:var(--text-soft)}
+.band--forest .lead{color:var(--on-dark-soft)}
+.measure{max-width:60ch}
+
+/* ── sticker construction (the logo's own build) ────────────────────── */
+.sticker{
+  border:var(--kl) solid var(--line);
+  border-radius:var(--r-lg);
+  box-shadow:var(--shadow);
+  background:var(--surface);
+}
+.press{
+  transition:transform .13s cubic-bezier(.3,.8,.4,1), box-shadow .13s cubic-bezier(.3,.8,.4,1);
+}
+.press:hover{transform:translate(2px,2px);box-shadow:3px 3px 0 var(--ink)}
+.press:active{transform:translate(5px,5px);box-shadow:0 0 0 var(--ink)}
+@media (prefers-reduced-motion:reduce){
+  .press,.press:hover,.press:active{transition:none;transform:none}
+}
+
+/* ── buttons ────────────────────────────────────────────────────────── */
+.btn{
+  display:inline-flex;align-items:center;gap:.55em;
+  font-family:var(--display);font-weight:600;font-size:1.02rem;
+  padding:.82em 1.5em;border-radius:var(--r-pill);
+  border:var(--kl) solid #14201F;box-shadow:5px 5px 0 #14201F;
+  text-decoration:none;cursor:pointer;white-space:nowrap;
+}
+.btn--zest{background:var(--zest);color:#2A0C00}
+.btn--lime{background:var(--lime);color:#0B2116}
+.btn--ghost{background:var(--moss);color:var(--lime);border-color:#000;box-shadow:5px 5px 0 #000}
+.btn--sm{font-size:.92rem;padding:.6em 1.15em;box-shadow:var(--shadow-sm)}
+.btn--sm:hover{box-shadow:2px 2px 0 var(--ink)}
+
+/* ── nav ────────────────────────────────────────────────────────────── */
+.nav{
+  position:sticky;top:env(safe-area-inset-top,0px);z-index:60;
+  background:var(--forest-deep);
+  border-bottom:var(--kl) solid #000;
+  padding-inline:var(--gutter);
+}
+.nav__in{
+  max-width:var(--wrap);margin-inline:auto;
+  display:flex;align-items:center;gap:20px;
+  padding-block:13px;
+}
+.nav__logo{height:54px;width:auto;flex:none}
+.nav__links{display:flex;gap:26px;margin-left:auto;align-items:center}
+.nav__links a{
+  text-decoration:none;color:var(--pistachio);font-weight:500;font-size:.94rem;
+  padding-block:4px;border-bottom:2px solid transparent;
+}
+.nav__links a:hover{border-bottom-color:var(--zest)}
+@media (max-width:860px){ .nav__links{display:none} }
+
+/* ── hero ───────────────────────────────────────────────────────────── */
+.hero{
+  background:var(--forest-deep);color:var(--on-dark);
+  padding-inline:var(--gutter);
+  padding-block:clamp(48px,7vw,86px) clamp(56px,7vw,92px);
+  position:relative;overflow:hidden;
+}
+.hero__grid{
+  max-width:var(--wrap);margin-inline:auto;position:relative;z-index:2;
+  display:grid;grid-template-columns:1.12fr .88fr;gap:clamp(30px,5vw,64px);align-items:center;
+}
+.hero__eyebrow{
+  display:inline-flex;align-items:center;gap:.6em;
+  background:var(--moss);color:var(--lime);
+  border:2px solid #000;border-radius:var(--r-pill);
+  padding:.42em 1em;margin-bottom:22px;
+}
+.hero__dot{width:9px;height:9px;border-radius:50%;background:var(--zest);flex:none}
+.hero h1{
+  font-size:clamp(2.4rem,5.9vw,4.7rem);font-weight:600;line-height:1.0;
+  letter-spacing:-.028em;margin-bottom:22px;text-wrap:initial;
+}
+.hero h1 em{font-style:normal;color:var(--lime);position:relative;white-space:nowrap}
+.hero h1 em::after{
+  content:"";position:absolute;left:0;right:0;bottom:-.055em;height:.095em;
+  background:var(--zest);border-radius:2px;
+}
+.hero__sub{max-width:52ch;color:var(--on-dark-soft);font-size:clamp(1.04rem,1.5vw,1.2rem)}
+.hero__cta{display:flex;flex-wrap:wrap;gap:16px;margin-block:30px 20px}
+.hero__note{font-size:.88rem;color:var(--on-dark-soft)}
+.hero__note b{color:var(--pistachio);font-weight:600}
+
+.hero__art{position:relative;display:flex;justify-content:center}
+.hero__frog{
+  width:min(100%,380px);filter:drop-shadow(9px 9px 0 rgba(0,0,0,.5));
+  transform:rotate(-4deg);
+}
+.hero__tag{
+  position:absolute;right:-6px;bottom:-14px;
+  background:var(--lime);color:#0B2116;
+  border:var(--kl) solid #000;border-radius:var(--r-md);
+  box-shadow:var(--shadow);
+  padding:.7em 1.05em;transform:rotate(5deg);
+  font-family:var(--display);font-weight:600;line-height:1.15;font-size:.95rem;max-width:210px;
+}
+@media (max-width:900px){
+  .hero__grid{grid-template-columns:1fr}
+  .hero__art{order:-1;margin-bottom:8px}
+  .hero__frog{width:min(64%,250px)}
+  .hero__tag{right:2%;bottom:-8px;font-size:.86rem;max-width:180px}
+}
+
+/* stat strip */
+.stats{
+  max-width:var(--wrap);margin:clamp(38px,5vw,58px) auto 0;position:relative;z-index:2;
+  display:grid;grid-template-columns:repeat(4,1fr);gap:14px;
+}
+.stat{
+  background:var(--forest);border:var(--kl) solid #000;border-radius:var(--r-md);
+  box-shadow:var(--shadow-sm);padding:16px 18px;
+}
+.stat__n{
+  font-family:var(--display);font-weight:600;font-size:clamp(1.6rem,3vw,2.15rem);
+  line-height:1;color:var(--lime);font-variant-numeric:tabular-nums;
+}
+.stat__l{font-size:.79rem;color:var(--on-dark-soft);margin-top:6px;line-height:1.35}
+@media (max-width:780px){ .stats{grid-template-columns:repeat(2,1fr)} }
+
+/* ── logo ticker ────────────────────────────────────────────────────── */
+.ticker{
+  background:var(--pistachio);border-block:var(--kl) solid #000;
+  padding-block:13px;padding-inline:var(--gutter);overflow:hidden;
+}
+.ticker__in{
+  max-width:var(--wrap);margin-inline:auto;
+  display:flex;flex-wrap:wrap;gap:10px 26px;justify-content:center;align-items:center;
+  font-family:var(--display);font-weight:500;color:var(--forest);font-size:.92rem;
+}
+.ticker__in span{display:inline-flex;align-items:center;gap:26px}
+.ticker__in span::after{content:"";width:6px;height:6px;border-radius:50%;background:var(--zest)}
+.ticker__in span:last-child::after{display:none}
+
+/* ── pain decals ────────────────────────────────────────────────────── */
+.pain{display:grid;grid-template-columns:repeat(3,1fr);gap:clamp(18px,2.6vw,26px);margin-top:44px}
+.decal{
+  background:var(--surface);border:var(--kl) solid var(--line);border-radius:var(--r-lg);
+  box-shadow:var(--shadow);padding:26px 24px 24px;
+  display:flex;flex-direction:column;gap:12px;
+}
+.decal:nth-child(1){transform:rotate(-1.1deg)}
+.decal:nth-child(2){transform:rotate(.7deg)}
+.decal:nth-child(3){transform:rotate(-.5deg)}
+.decal__tick{
+  width:38px;height:38px;border-radius:50%;flex:none;
+  border:var(--kl) solid var(--line);background:var(--lime);
+  display:grid;place-items:center;font-family:var(--display);font-weight:600;color:#0B2116;
+}
+.decal p{color:var(--text-soft);font-size:.97rem}
+@media (max-width:880px){ .pain{grid-template-columns:1fr} .decal{transform:none !important} }
+
+/* ── services: rules, not boxes ─────────────────────────────────────── */
+.svc{margin-top:42px;border-top:2px solid var(--rule)}
+.svc__row{
+  display:grid;grid-template-columns:auto 1.05fr 1.35fr;gap:clamp(16px,3vw,40px);
+  align-items:start;padding-block:26px;border-bottom:2px solid var(--rule);
+}
+.svc__no{
+  font-family:var(--display);font-weight:600;font-size:.95rem;color:var(--zest);
+  font-variant-numeric:tabular-nums;padding-top:.28em;
+}
+.svc__body{color:var(--text-soft);font-size:.98rem}
+.svc__body ul{margin:10px 0 0;padding-left:1.05em}
+.svc__body li{margin-bottom:4px}
+@media (max-width:820px){
+  .svc__row{grid-template-columns:auto 1fr;gap:12px 16px}
+  .svc__body{grid-column:2}
+}
+
+/* ── the AHPRA plate ────────────────────────────────────────────────── */
+.plate{
+  background:var(--zest);color:#2A0C00;
+  border:var(--kl) solid #000;border-radius:var(--r-lg);box-shadow:var(--shadow-lg);
+  padding:clamp(28px,4.5vw,52px);
+  display:grid;grid-template-columns:1.25fr .95fr;gap:clamp(24px,4vw,48px);align-items:center;
+}
+.plate h2{font-size:clamp(1.8rem,3.6vw,2.7rem);font-weight:600;line-height:1.04;margin-bottom:16px}
+.plate p{color:#3A1404;font-size:1.02rem}
+.plate .label{color:#4A1B06;margin-bottom:12px}
+.plate__card{
+  background:#FFF4EC;border:var(--kl) solid #000;border-radius:var(--r-md);padding:22px 22px 20px;
+}
+.plate__card .h3{margin-bottom:10px;color:#2A0C00}
+.plate__card p{font-size:.93rem;color:#5A2A12}
+.plate__card .plate__fine{font-size:.82rem;color:#7A2E0C;margin-top:14px;font-style:italic}
+@media (max-width:860px){ .plate{grid-template-columns:1fr} }
+
+/* ── process spine ──────────────────────────────────────────────────── */
+.steps{margin-top:46px;display:grid;gap:0}
+.step{
+  display:grid;grid-template-columns:96px 1fr;gap:clamp(16px,3vw,34px);
+  padding-block:26px;border-top:2px solid rgba(225,238,187,.2);align-items:start;
+}
+.step:last-child{border-bottom:2px solid rgba(225,238,187,.2)}
+.step__n{
+  font-family:var(--display);font-weight:600;font-size:clamp(2rem,4vw,2.9rem);line-height:.9;
+  color:var(--moss);font-variant-numeric:tabular-nums;
+}
+.step__wk{
+  display:inline-block;background:var(--moss);color:var(--lime);
+  border:2px solid #000;border-radius:var(--r-pill);
+  padding:.18em .75em;font-size:.72rem;font-weight:700;letter-spacing:.09em;
+  text-transform:uppercase;margin-bottom:10px;
+}
+.step h3{color:var(--on-dark);margin-bottom:7px}
+.step p{color:var(--on-dark-soft);font-size:.98rem;max-width:62ch}
+@media (max-width:700px){ .step{grid-template-columns:62px 1fr} }
+
+/* ── proof ──────────────────────────────────────────────────────────── */
+.proof{display:grid;grid-template-columns:1fr 1fr;gap:clamp(18px,2.6vw,26px);margin-top:42px}
+.quote{
+  background:var(--surface);border:var(--kl) solid var(--line);border-radius:var(--r-lg);
+  box-shadow:var(--shadow);padding:28px 26px;display:flex;flex-direction:column;gap:16px;
+}
+.quote__mark{font-family:var(--display);font-size:2.6rem;line-height:.6;color:var(--zest)}
+.quote blockquote{margin:0;font-size:1.05rem;line-height:1.55}
+.quote__who{display:flex;align-items:center;gap:12px;margin-top:auto;padding-top:6px}
+.quote__av{
+  width:40px;height:40px;border-radius:50%;flex:none;background:var(--forest);
+  border:2px solid var(--line);display:grid;place-items:center;
+  font-family:var(--display);font-weight:600;color:var(--lime);font-size:.88rem;
+}
+.quote__meta{font-size:.85rem;color:var(--text-soft);line-height:1.35}
+.quote__meta b{display:block;color:var(--text);font-weight:600;font-size:.92rem}
+.quote__delta{
+  font-family:var(--display);font-weight:600;color:var(--forest);font-size:.95rem;
+}
+.legal-note{
+  margin-top:26px;background:var(--surface-2);
+  border:2px dashed var(--rule);border-radius:var(--r-md);
+  padding:18px 20px;font-size:.9rem;color:var(--text-soft);
+}
+.legal-note b{color:var(--text);font-weight:600}
+@media (max-width:820px){ .proof{grid-template-columns:1fr} }
+
+/* ── pricing ────────────────────────────────────────────────────────── */
+.tiers{display:grid;grid-template-columns:repeat(3,1fr);gap:clamp(18px,2.4vw,24px);margin-top:44px;align-items:stretch}
+.tier{
+  background:var(--surface);border:var(--kl) solid var(--line);border-radius:var(--r-lg);
+  padding:26px 24px 24px;display:flex;flex-direction:column;gap:14px;
+  box-shadow:var(--shadow-sm);
+}
+.tier--hero{background:var(--forest);color:var(--on-dark);box-shadow:var(--shadow-lg);position:relative}
+.tier--hero .tier__price,.tier--hero .h3{color:var(--lime)}
+.tier--hero .tier__desc,.tier--hero li{color:var(--pistachio)}
+.tier__flag{
+  position:absolute;top:-15px;right:18px;background:var(--zest);color:#2A0C00;
+  border:2px solid #000;border-radius:var(--r-pill);padding:.22em .8em;
+  font-size:.7rem;font-weight:700;text-transform:uppercase;letter-spacing:.1em;
+  transform:rotate(3deg);
+}
+.tier__price{
+  font-family:var(--display);font-weight:600;font-size:clamp(1.7rem,3vw,2.2rem);
+  line-height:1;color:var(--forest);font-variant-numeric:tabular-nums;
+}
+.tier__price small{font-family:var(--body);font-size:.72rem;font-weight:500;color:var(--text-soft);display:block;margin-top:6px;letter-spacing:.02em}
+.tier--hero .tier__price small{color:var(--on-dark-soft)}
+.tier__desc{font-size:.93rem;color:var(--text-soft)}
+.tier ul{margin:0;padding-left:0;list-style:none;display:grid;gap:8px;font-size:.93rem;color:var(--text-soft)}
+.tier li{display:grid;grid-template-columns:18px 1fr;gap:9px;align-items:start}
+.tier li::before{content:"";width:9px;height:9px;margin-top:.45em;border-radius:50%;background:var(--zest)}
+.tier .btn{margin-top:auto;justify-content:center}
+@media (max-width:900px){ .tiers{grid-template-columns:1fr} }
+
+/* ── faq ────────────────────────────────────────────────────────────── */
+.faq{margin-top:38px;display:grid;gap:12px;max-width:min(100%,820px)}
+.faq details{
+  background:var(--surface);border:var(--kl) solid var(--line);border-radius:var(--r-md);
+  padding:0 20px;box-shadow:var(--shadow-sm);
+}
+.faq summary{
+  font-family:var(--display);font-weight:600;font-size:1.03rem;
+  padding-block:17px;cursor:pointer;list-style:none;
+  display:flex;justify-content:space-between;align-items:center;gap:16px;
+}
+.faq summary::-webkit-details-marker{display:none}
+.faq summary::after{
+  content:"+";font-size:1.5rem;line-height:1;color:var(--zest);flex:none;
+}
+.faq details[open] summary::after{content:"–"}
+.faq details p{padding-bottom:19px;color:var(--text-soft);font-size:.96rem;max-width:66ch}
+
+/* ── close ──────────────────────────────────────────────────────────── */
+.close{text-align:center;display:grid;justify-items:center;gap:20px}
+.close h2{font-size:clamp(2.1rem,5.4vw,3.8rem);font-weight:600;line-height:1.0;max-width:16ch}
+.close__frog{width:min(46%,170px);margin-bottom:4px;filter:drop-shadow(7px 7px 0 rgba(0,0,0,.45))}
+.close__cta{display:flex;flex-wrap:wrap;gap:15px;justify-content:center;margin-top:6px}
+.close__fine{font-size:.86rem;color:var(--on-dark-soft);max-width:46ch}
+
+/* ── footer ─────────────────────────────────────────────────────────── */
+.foot{
+  background:var(--ink);color:var(--pistachio);
+  padding-inline:var(--gutter);padding-block:44px 36px;
+  border-top:var(--kl) solid #000;
+}
+.foot__in{
+  max-width:var(--wrap);margin-inline:auto;
+  display:grid;grid-template-columns:1.3fr 1fr 1fr;gap:34px;align-items:start;
+}
+.foot__logo{height:66px;width:auto;margin-bottom:16px}
+.foot__tag{font-size:.9rem;color:#8FA894;max-width:36ch;line-height:1.55}
+.foot h4{font-family:var(--display);font-size:.78rem;text-transform:uppercase;letter-spacing:.14em;color:#8FA894;margin-bottom:12px;font-weight:600}
+.foot ul{list-style:none;margin:0;padding:0;display:grid;gap:9px;font-size:.92rem}
+.foot a{text-decoration:none;color:var(--pistachio)}
+.foot a:hover{color:var(--zest)}
+.foot__base{
+  max-width:var(--wrap);margin:30px auto 0;padding-top:20px;border-top:1px solid rgba(225,238,187,.16);
+  display:flex;flex-wrap:wrap;gap:12px 24px;justify-content:space-between;
+  font-size:.81rem;color:#7C9482;
+}
+@media (max-width:780px){ .foot__in{grid-template-columns:1fr 1fr} .foot__brand{grid-column:1/-1} }
+</style>
+
+</head>
+<body>
+<!-- ══ NAV ══════════════════════════════════════════════════════════ -->
+<nav class="nav">
+  <div class="nav__in">
+    <img class="nav__logo" src="assets/alio-logo.png" alt="Alio! Brand Studios">
+    <div class="nav__links">
+      <a href="#problem">Why us</a>
+      <a href="#services">What we make</a>
+      <a href="#process">Process</a>
+      <a href="#pricing">Pricing</a>
+    </div>
+    <a class="btn btn--lime btn--sm press" href="#book" style="margin-left:auto">Book a brand check</a>
+  </div>
+</nav>
+
+<!-- ══ HERO ═════════════════════════════════════════════════════════ -->
+<header class="hero">
+  <div class="hero__grid">
+    <div>
+      <p class="hero__eyebrow label"><span class="hero__dot"></span>Brand studio for allied health &amp; service businesses</p>
+      <h1>Best hands<br>in the suburb.<br><em>Best-kept secret</em><br>in it.</h1>
+      <p class="hero__sub">
+        Alio! builds brands for clinic and service-business owners who are far too busy
+        doing the work to market it. Identity, website and booking funnel —
+        AHPRA-safe, referral-ready, live in six weeks.
+      </p>
+      <div class="hero__cta">
+        <a class="btn btn--zest press" href="#book">Book a free 20-min brand check</a>
+        <a class="btn btn--ghost press" href="#work">See the work</a>
+      </div>
+      <p class="hero__note">
+        No pitch deck, no retainer trap. <b>You'll leave the call with three things to fix</b> whether you hire us or not.
+      </p>
+    </div>
+    <div class="hero__art">
+      <img class="hero__frog" src="assets/alio-mark.png" alt="">
+      <p class="hero__tag">Small studio.<br>Very big leap.</p>
+    </div>
+  </div>
+
+  <div class="stats">
+    <div class="stat">
+      <p class="stat__n">6 wks</p>
+      <p class="stat__l">Brief to launched site</p>
+    </div>
+    <div class="stat">
+      <p class="stat__n">+38%</p>
+      <p class="stat__l">Median lift in new-patient enquiries, first 90 days</p>
+    </div>
+    <div class="stat">
+      <p class="stat__n">64</p>
+      <p class="stat__l">Clinics &amp; service businesses branded</p>
+    </div>
+    <div class="stat">
+      <p class="stat__n">0</p>
+      <p class="stat__l">Advertising complaints against our work</p>
+    </div>
+  </div>
+</header>
+
+<!-- ══ TICKER ═══════════════════════════════════════════════════════ -->
+<div class="ticker">
+  <div class="ticker__in">
+    <span>Physiotherapy</span><span>Podiatry</span><span>Exercise physiology</span>
+    <span>Speech pathology</span><span>Occupational therapy</span><span>Dietetics</span>
+    <span>Chiro &amp; osteo</span><span>Dental</span><span>Trades &amp; home services</span>
+  </div>
+</div>
+
+<!-- ══ PROBLEM ══════════════════════════════════════════════════════ -->
+<section class="band band--paper" id="problem">
+  <div class="wrap">
+    <p class="label" style="color:var(--zest)">The honest bit</p>
+    <h2 class="h2 measure" style="margin-block:12px 14px">You didn't do four years of uni to become a part-time marketer.</h2>
+    <p class="lead measure">
+      And yet here you are at 9pm, fighting a Canva template, wondering why the
+      corporate chain that opened two streets away is fully booked.
+    </p>
+
+    <div class="pain">
+      <article class="decal">
+        <span class="decal__tick">01</span>
+        <h3 class="h3">Your Google listing is doing all the heavy lifting</h3>
+        <p>Word of mouth got you here. It won't get you to a second room, a second practitioner, or a second location — and it goes quiet the month you need it most.</p>
+      </article>
+      <article class="decal">
+        <span class="decal__tick">02</span>
+        <h3 class="h3">You look like every other clinic on the strip</h3>
+        <p>Blue gradient. Stock photo of a spine. A name in Montserrat. If a patient can't tell you apart from the chain, they'll pick on price and parking.</p>
+      </article>
+      <article class="decal">
+        <span class="decal__tick">03</span>
+        <h3 class="h3">The wrong enquiries keep getting through</h3>
+        <p>You're fielding one-off bulk-billed appointments when you want chronic-care caseloads and NDIS plan-managed clients. That's a brand problem before it's a marketing one.</p>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- ══ SERVICES ═════════════════════════════════════════════════════ -->
+<section class="band band--forest" id="services">
+  <div class="wrap">
+    <p class="label" style="color:var(--zest)">What you actually get</p>
+    <h2 class="h2 measure" style="margin-block:12px 14px;color:var(--on-dark)">One studio. Four things. All of it shipped, none of it &ldquo;strategy decks&rdquo;.</h2>
+    <p class="lead measure">Fixed scope, fixed price, fixed date. We hand over the files and you own them outright.</p>
+
+    <div class="svc" style="border-top-color:rgba(225,238,187,.2)">
+      <div class="svc__row" style="border-bottom-color:rgba(225,238,187,.2)">
+        <p class="svc__no">01</p>
+        <h3 class="h3" style="color:var(--on-dark)">Identity that survives contact with a shopfront</h3>
+        <div class="svc__body" style="color:var(--on-dark-soft)">
+          Wordmark, mark and colour system built to work at 12mm on a business card and 2.4m on a facade.
+          <ul>
+            <li>Signage &amp; window decal artwork, print-ready</li>
+            <li>Uniforms, lanyards, vehicle livery</li>
+            <li>Referral pads, exercise sheets, invoice templates</li>
+          </ul>
+        </div>
+      </div>
+      <div class="svc__row" style="border-bottom-color:rgba(225,238,187,.2)">
+        <p class="svc__no">02</p>
+        <h3 class="h3" style="color:var(--on-dark)">A website wired into the software you already run</h3>
+        <div class="svc__body" style="color:var(--on-dark-soft)">
+          The booking button is the whole point, so we build the site around it — not bolted on afterwards.
+          <ul>
+            <li>Live integration with Cliniko, Nookal, Halaxy or Power Diary</li>
+            <li>Service pages that rank for &ldquo;<em>your thing</em> + your suburb&rdquo;</li>
+            <li>Page speed under 2s on a 4G phone in a waiting room</li>
+          </ul>
+        </div>
+      </div>
+      <div class="svc__row" style="border-bottom-color:rgba(225,238,187,.2)">
+        <p class="svc__no">03</p>
+        <h3 class="h3" style="color:var(--on-dark)">A referral kit your GPs will actually keep</h3>
+        <div class="svc__body" style="color:var(--on-dark-soft)">
+          The highest-value marketing you own is one page on a practice manager's desk.
+          <ul>
+            <li>GP-facing one-pagers for EPC / Chronic Disease Management pathways</li>
+            <li>NDIS-ready capability statement for support coordinators</li>
+            <li>Intro letter sequence and a drop-in schedule that isn't awkward</li>
+          </ul>
+        </div>
+      </div>
+      <div class="svc__row" style="border-bottom:none">
+        <p class="svc__no">04</p>
+        <h3 class="h3" style="color:var(--on-dark)">A launch that fills the diary, not the inbox</h3>
+        <div class="svc__body" style="color:var(--on-dark-soft)">
+          Traffic is vanity. Booked initial consults are the number we report on.
+          <ul>
+            <li>Local search &amp; Google Business Profile rebuild</li>
+            <li>Meta campaigns written to the compliance line, not over it</li>
+            <li>The front-desk phone script that converts the call</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══ AHPRA PLATE ══════════════════════════════════════════════════ -->
+<section class="band band--paper">
+  <div class="wrap">
+    <div class="plate">
+      <div>
+        <p class="label">The reason clinics switch to us</p>
+        <h2>We read the National Law so your marketing doesn't end up in it.</h2>
+        <p>
+          Section 133 means a regulated health service can't be advertised with testimonials —
+          not on your homepage, not in an ad, not by resharing a glowing Google review to your feed.
+          Most agencies discover this when the notification arrives.
+        </p>
+        <p style="margin-top:14px">
+          We design around it from the first sketch: proof without testimonials,
+          confidence without &ldquo;best in Sydney&rdquo;, outcomes without prohibited claims.
+          Everything we ship gets a compliance pass before it goes near your domain.
+        </p>
+      </div>
+      <div class="plate__card">
+        <h3 class="h3">What we swap it for</h3>
+        <p>
+          Credentials and scope of practice. Photographed real rooms and real staff.
+          Plain-language explanations of what an initial consult involves.
+          Transparent fees. Wait times. Parking, honestly.
+        </p>
+        <p style="margin-top:12px">
+          Boring? A little. It also converts better than a five-star wall,
+          because it answers the question the patient is actually asking.
+        </p>
+        <p class="plate__fine">Not legal advice — but we'll flag it before it ships.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══ PROCESS ══════════════════════════════════════════════════════ -->
+<section class="band band--forest" id="process">
+  <div class="wrap">
+    <p class="label" style="color:var(--zest)">Six weeks, start to finish</p>
+    <h2 class="h2 measure" style="margin-block:12px 14px;color:var(--on-dark)">You'll spend about four hours on this. That's the deal.</h2>
+    <p class="lead measure">Booked as four sessions around your clinic hours. Everything between them is ours to carry.</p>
+
+    <div class="steps">
+      <div class="step">
+        <p class="step__n">01</p>
+        <div>
+          <span class="step__wk">Week 1</span>
+          <h3 class="h3">The clinic audit</h3>
+          <p>Ninety minutes on the phone and a week in your data. We pull your last 12 months of bookings, your referral sources, your no-show rate and your practitioner utilisation, then tell you which of them is actually the bottleneck. Sometimes it isn't marketing, and we'll say so.</p>
+        </div>
+      </div>
+      <div class="step">
+        <p class="step__n">02</p>
+        <div>
+          <span class="step__wk">Week 2</span>
+          <h3 class="h3">Identity sprint</h3>
+          <p>Two directions, not twelve. Presented on the things you'll really see them on — the facade, the polo, the appointment reminder SMS. You pick one and we refine; no infinite revision rounds, no design-by-committee.</p>
+        </div>
+      </div>
+      <div class="step">
+        <p class="step__n">03</p>
+        <div>
+          <span class="step__wk">Weeks 3–4</span>
+          <h3 class="h3">Build</h3>
+          <p>Site, booking integration, referral kit, print files. You see it staged at the end of week three and again before launch. We write every word — you're reviewing copy, not supplying it.</p>
+        </div>
+      </div>
+      <div class="step">
+        <p class="step__n">04</p>
+        <div>
+          <span class="step__wk">Weeks 5–6</span>
+          <h3 class="h3">Launch &amp; handover</h3>
+          <p>We go live, run the first campaign, and train your front desk on the new enquiry flow. You get the source files, the logins and a 40-minute recording of how it all works. Then a check-in at day 30, 60 and 90.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══ PROOF ════════════════════════════════════════════════════════ -->
+<section class="band band--paper" id="work">
+  <div class="wrap">
+    <p class="label" style="color:var(--zest)">Owners, in their words</p>
+    <h2 class="h2 measure" style="margin-block:12px 14px">Ninety days after launch.</h2>
+
+    <div class="proof">
+      <article class="quote">
+        <p class="quote__mark">&ldquo;</p>
+        <blockquote>We'd been the busiest physio in town and the worst-looking one for about eight years. First month after launch we hired a second EP because the diary wouldn't fit her in.</blockquote>
+        <p class="quote__delta">Initial consults: 41 → 67 per month</p>
+        <div class="quote__who">
+          <span class="quote__av">HM</span>
+          <p class="quote__meta"><b>Hana M.</b>Practice owner · Physiotherapy · Newcastle NSW</p>
+        </div>
+      </article>
+      <article class="quote">
+        <p class="quote__mark">&ldquo;</p>
+        <blockquote>The referral one-pager did more in a fortnight than two years of me awkwardly dropping in on GP clinics with a box of biscuits.</blockquote>
+        <p class="quote__delta">GP-referred new patients: 3.2× in 90 days</p>
+        <div class="quote__who">
+          <span class="quote__av">DR</span>
+          <p class="quote__meta"><b>Dev R.</b>Director · Podiatry &amp; orthotics · Footscray VIC</p>
+        </div>
+      </article>
+    </div>
+
+    <p class="legal-note">
+      <b>Yes, we know.</b> Those are testimonials — and they're allowed here, because they're clinic owners
+      describing a <i>marketing service</i>, not patients describing a health service. That distinction is
+      exactly what section 133 turns on, and it's the difference between a page that converts and a page
+      that gets you a notification. We'll show you where the line sits on your own site.
+    </p>
+  </div>
+</section>
+
+<!-- ══ PRICING ══════════════════════════════════════════════════════ -->
+<section class="band band--paper" id="pricing" style="padding-top:0">
+  <div class="wrap">
+    <p class="label" style="color:var(--zest)">Pricing, up front</p>
+    <h2 class="h2 measure" style="margin-block:12px 14px">Because you'd hate being asked to &ldquo;jump on a call for a quote&rdquo; too.</h2>
+    <p class="lead measure">Fixed price. Payment split across the six weeks. Australian studio, AUD, excluding GST.</p>
+
+    <div class="tiers">
+      <article class="tier">
+        <h3 class="h3">Sole Trader Start</h3>
+        <p class="tier__price">$4,900<small>one-off · 3 weeks</small></p>
+        <p class="tier__desc">For a single practitioner going out on their own, or a mobile service that needs to look real by Monday.</p>
+        <ul>
+          <li>Wordmark, mark, colour &amp; type system</li>
+          <li>Four-page site with live booking</li>
+          <li>Business card, invoice &amp; email signature</li>
+          <li>Google Business Profile setup</li>
+        </ul>
+        <a class="btn btn--lime press" href="#book">Start here</a>
+      </article>
+
+      <article class="tier tier--hero">
+        <span class="tier__flag">Most clinics pick this</span>
+        <h3 class="h3">Full Clinic Brand</h3>
+        <p class="tier__price">$11,900<small>one-off · 6 weeks</small></p>
+        <p class="tier__desc">The whole six-week program for an established clinic with a shopfront, staff and a diary to fill.</p>
+        <ul>
+          <li>Everything in Sole Trader Start</li>
+          <li>Signage, uniform &amp; vehicle artwork</li>
+          <li>Practice-software integration &amp; service pages</li>
+          <li>GP / NDIS referral kit</li>
+          <li>Launch campaign + front-desk training</li>
+          <li>30 / 60 / 90-day check-ins</li>
+        </ul>
+        <a class="btn btn--zest press" href="#book">Book a brand check</a>
+      </article>
+
+      <article class="tier">
+        <h3 class="h3">Multi-Site &amp; Franchise</h3>
+        <p class="tier__price">from $26,000<small>scoped per site</small></p>
+        <p class="tier__desc">For groups running three or more locations, or anyone building a system other operators will use.</p>
+        <ul>
+          <li>Master brand &amp; sub-location system</li>
+          <li>Documented guidelines + asset library</li>
+          <li>Per-site launch playbook</li>
+          <li>Onboarding kit for new locations</li>
+        </ul>
+        <a class="btn btn--lime press" href="#book">Talk scope</a>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- ══ FAQ ══════════════════════════════════════════════════════════ -->
+<section class="band band--paper" id="faq" style="padding-top:0">
+  <div class="wrap">
+    <p class="label" style="color:var(--zest)">Before you ask</p>
+    <h2 class="h2" style="margin-block:12px 0">Fair questions.</h2>
+
+    <div class="faq">
+      <details open>
+        <summary>We're not allied health — we're a trade. Still relevant?</summary>
+        <p>Very. Roughly a third of our work is plumbing, electrical, mobile mechanics and home services. Same shape of problem: skilled operator, strong word of mouth, brand that undersells the work. You skip the compliance module and we spend that time on quoting and job-booking flow instead.</p>
+      </details>
+      <details>
+        <summary>Do I have to leave my current booking software?</summary>
+        <p>No. We build to whatever you already run — Cliniko, Nookal, Halaxy, Power Diary, Coreplus. Changing practice software mid-rebrand is how clinics lose a month of billings, and we'll talk you out of it.</p>
+      </details>
+      <details>
+        <summary>Who owns the files at the end?</summary>
+        <p>You do, outright — source files, fonts licensed in your name, domain and hosting in your account. No hostage retainer. If you want us monthly afterwards, that's a separate conversation you're free to decline.</p>
+      </details>
+      <details>
+        <summary>What if the audit says our brand isn't the problem?</summary>
+        <p>Then we tell you that in week one and you don't spend the money. It happens a few times a year — usually the real issue is availability, cancellation policy, or a front desk that isn't rebooking. We'll write it up either way.</p>
+      </details>
+      <details>
+        <summary>Six weeks — really?</summary>
+        <p>Really, provided you make the four sessions. Our schedule slips when owners disappear for a fortnight mid-build, so we lock the dates at kickoff and hold them. We've run this program 64 times.</p>
+      </details>
+    </div>
+  </div>
+</section>
+
+<!-- ══ CLOSE ════════════════════════════════════════════════════════ -->
+<section class="band band--forest" id="book">
+  <div class="wrap close">
+    <img class="close__frog" src="assets/alio-mark.png" alt="">
+    <h2 style="color:var(--on-dark)">Stop being the best-kept secret on the strip.</h2>
+    <p class="lead" style="max-width:52ch">
+      Twenty minutes, no deck, no obligation. Bring your last three months of booking numbers
+      and we'll tell you what's leaking.
+    </p>
+    <div class="close__cta">
+      <a class="btn btn--zest press" href="mailto:hello@aliobrandstudios.com.au">Book a free brand check</a>
+      <a class="btn btn--ghost press" href="tel:+61000000000">Or just call us</a>
+    </div>
+    <p class="close__fine">Mon–Fri, 8am–6pm AEST. We answer our own phone, which we're told is unusual.</p>
+  </div>
+</section>
+
+<!-- ══ FOOTER ═══════════════════════════════════════════════════════ -->
+<footer class="foot">
+  <div class="foot__in">
+    <div class="foot__brand">
+      <img class="foot__logo" src="assets/alio-logo.png" alt="Alio! Brand Studios">
+      <p class="foot__tag">
+        <i>Alio</i> — Latin, &ldquo;to somewhere else&rdquo;.
+        Which is where your competitors' patients are currently going.
+      </p>
+    </div>
+    <div>
+      <h4>Studio</h4>
+      <ul>
+        <li><a href="#work">Work</a></li>
+        <li><a href="#services">What we make</a></li>
+        <li><a href="#process">Process</a></li>
+        <li><a href="#pricing">Pricing</a></li>
+      </ul>
+    </div>
+    <div>
+      <h4>Get in touch</h4>
+      <ul>
+        <li><a href="mailto:hello@aliobrandstudios.com.au">hello@aliobrandstudios.com.au</a></li>
+        <li><a href="#book">Book a brand check</a></li>
+        <li><a href="#faq">FAQ</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="foot__base">
+    <span>© 2026 Alio! Brand Studios · ABN 00 000 000 000</span>
+    <span>Working with clinics &amp; service businesses Australia-wide</span>
+  </div>
+</footer>
+</body>
+</html>
