@@ -188,10 +188,10 @@ const mat = {
 
 /* ---------- procedural textures ---------- */
 const S = 200; // carpet pixels per metre
-const lightPoly = [[4.3, 5.22], [6.0, 5.17], [9.5, 5.0], [9.5, 8], [4.3, 8]];
-const darkPoly = [[0, 3.6], [9.5, 3.6], [9.5, 5.0], [6.0, 5.17], [4.3, 5.22], [4.3, 4.7], [0, 4.7]];
+const lightPoly = [[4.3, 5.22], [6.0, 5.17], [11.3, 4.9], [11.3, 8], [4.3, 8]];
+const darkPoly = [[0, 3.6], [11.3, 3.6], [11.3, 4.9], [6.0, 5.17], [4.3, 5.22], [4.3, 4.7], [0, 4.7]];
 function carpetTexture() {
-  const [c, g] = cnv(9.5 * S, 8 * S);
+  const [c, g] = cnv(11.3 * S, 8 * S);
   const pc = (x, z) => [x * S, (8 - z) * S];
   const path = poly => { g.beginPath(); poly.forEach(([x, z], i) => { const [cx, cy] = pc(x, z); i ? g.lineTo(cx, cy) : g.moveTo(cx, cy); }); g.closePath(); };
   g.fillStyle = '#2a2623'; g.fillRect(0, 0, c.width, c.height);
@@ -211,13 +211,13 @@ function carpetTexture() {
   // fine white lines in the lighter field
   g.save(); path(lightPoly); g.clip();
   g.strokeStyle = '#d6cfbe'; g.lineWidth = 0.012 * S;
-  for (let z = 5.35; z < 7.95; z += rand(0.24, 0.4)) curve(rand(4.4, 5.8), z, 9.5, z + rand(-0.45, 0.15), rand(-0.05, 0.05));
+  for (let z = 5.35; z < 7.95; z += rand(0.24, 0.4)) curve(rand(4.4, 5.8), z, 11.3, z + rand(-0.45, 0.15), rand(-0.05, 0.05));
   g.restore();
   // pile noise
   const img = g.getImageData(0, 0, c.width, c.height), d = img.data;
   for (let i = 0; i < d.length; i += 4) { const n = (Math.random() - 0.5) * 26; d[i] += n; d[i + 1] += n; d[i + 2] += n; }
   g.putImageData(img, 0, 0);
-  const t = tex(c); t.repeat.set(1 / 9.5, 1 / 8); return t;
+  const t = tex(c); t.repeat.set(1 / 11.3, 1 / 8); return t;
 }
 
 const [cityC, cityG] = cnv(1536, 512);
@@ -282,10 +282,10 @@ function evacTexture() {
 }
 
 /* ---------- plan outline and walls ---------- */
-const outline = [[0, 0], [1.05, 0], [1.05, 3.6], [8.7, 3.6], [9.5, 4.4], [9.5, 8], [4.3, 8], [4.3, 4.7], [0, 4.7]];
+const outline = [[0, 0], [1.05, 0], [1.05, 3.6], [10.5, 3.6], [11.3, 4.4], [11.3, 8], [4.3, 8], [4.3, 4.7], [0, 4.7]];
 const SEGS = {
-  S1: [0, 0, 1.05, 0, 'hall'], S2: [1.05, 0, 1.05, 3.6, 'hall'], S3: [1.05, 3.6, 8.7, 3.6, 'room'],
-  S4: [8.7, 3.6, 9.5, 4.4, 'room'], S5: [9.5, 4.4, 9.5, 8, 'room'], S6: [9.5, 8, 4.3, 8, 'room'],
+  S1: [0, 0, 1.05, 0, 'hall'], S2: [1.05, 0, 1.05, 3.6, 'hall'], S3: [1.05, 3.6, 10.5, 3.6, 'room'],
+  S4: [10.5, 3.6, 11.3, 4.4, 'room'], S5: [11.3, 4.4, 11.3, 8, 'room'], S6: [11.3, 8, 4.3, 8, 'room'],
   S7: [4.3, 8, 4.3, 4.7, 'room'], S8: [4.3, 4.7, 0, 4.7, 'hall'], S9: [0, 4.7, 0, 0, 'hall'],
 };
 const segInfo = {}, wallGroups = {};
@@ -326,15 +326,15 @@ function flat(pts, y, material, parent = scene) {
 }
 const floor = flat(outline, 0, M('#ffffff', 1, 0, { map: carpetTexture() }));
 const ground = new THREE.Mesh(new THREE.PlaneGeometry(80, 80), M('#25211c', 1));
-ground.rotation.x = -Math.PI / 2; ground.position.set(4.75, -0.03, -4); scene.add(ground);
+ground.rotation.x = -Math.PI / 2; ground.position.set(5.65, -0.03, -4); scene.add(ground);
 
 const ceil = new THREE.Group(); scene.add(ceil);
 flat([[0, 0], [1.05, 0], [1.05, 3.6], [4.3, 3.6], [4.3, 4.7], [0, 4.7]], 2.55, mat.ceiling, ceil);
-flat([[4.3, 3.6], [8.7, 3.6], [9.5, 4.4], [9.5, 8], [4.3, 8]], 2.8, mat.ceiling, ceil);
+flat([[4.3, 3.6], [10.5, 3.6], [11.3, 4.4], [11.3, 8], [4.3, 8]], 2.8, mat.ceiling, ceil);
 // bedroom bulkheads (the tray ceiling in the photos)
-B(4.3, 8.7, 2.6, 2.8, 3.6, 3.98, mat.ceiling, ceil, false);
-B(9.12, 9.5, 2.6, 2.8, 4.4, 8, mat.ceiling, ceil, false);
-B(4.3, 9.5, 2.6, 2.8, 7.62, 8, mat.ceiling, ceil, false);
+B(4.3, 10.5, 2.6, 2.8, 3.6, 3.98, mat.ceiling, ceil, false);
+B(10.92, 11.3, 2.6, 2.8, 4.4, 8, mat.ceiling, ceil, false);
+B(4.3, 11.3, 2.6, 2.8, 7.62, 8, mat.ceiling, ceil, false);
 B(4.3, 5.05, 2.55, 2.8, 3.6, 8, mat.ceiling, ceil, false);
 { const g = onWall('S4', segInfo.S4.len / 2, 0, ceil); L(g, BX(segInfo.S4.len + 0.5, 0.2, 0.38), mat.ceiling, 0, 2.7, 0.19, false); }
 // AC grille on the bulkhead above the headboard
@@ -350,11 +350,11 @@ for (const [x, z, h] of downlights) {
   ring.rotation.x = Math.PI / 2; ring.position.copy(P(x, h - 0.003, z)); ceil.add(ring);
   const pl = new THREE.PointLight('#ffe9cc', 0.55, 3.6, 1.6); pl.position.copy(P(x, h - 0.2, z)); scene.add(pl);
 }
-for (const [x, z, h] of [[0.52, 1.9, 2.55], [2.8, 4.2, 2.55], [6.9, 5.8, 2.8]]) {
+for (const [x, z, h] of [[0.52, 1.9, 2.55], [2.8, 4.2, 2.55], [7.8, 5.8, 2.8]]) {
   rod([x, h, z], [x, h - 0.09, z], 0.008, mat.chrome, ceil);
   const head = new THREE.Mesh(new THREE.CylinderGeometry(0.025, 0.012, 0.02, 12), mat.chrome); head.position.copy(P(x, h - 0.1, z)); ceil.add(head);
 }
-{ const sd = new THREE.Mesh(new THREE.CylinderGeometry(0.06, 0.065, 0.03, 24), mat.white); sd.position.copy(P(8.1, 2.785, 5.4)); ceil.add(sd); }
+{ const sd = new THREE.Mesh(new THREE.CylinderGeometry(0.06, 0.065, 0.03, 24), mat.white); sd.position.copy(P(9.9, 2.785, 5.4)); ceil.add(sd); }
 
 /* ---------- doors ---------- */
 function door(k, s, w, { color, handle = 'lever', side = -1, card = false, sign = false, closer = false }) {
@@ -434,6 +434,13 @@ function windowOn(k, s0, s1, y0, y1, offset) {
 }
 windowOn('S5', 0.3, 3.0, 0.55, 2.5, 0.0);
 windowOn('S6', 0.5, 2.2, 0.55, 2.5, 0.55);
+// framed seed-pod print on the wall beside the bed
+{
+  const g = onWall('S6', 11.3 - 6.35);
+  L(g, BX(0.92, 1.14, 0.035), mat.frame, 0, 1.62, 0.018);
+  L(g, new THREE.PlaneGeometry(0.85, 1.07), M('#f6f3ec', 0.8), 0, 1.62, 0.0365, false);
+  L(g, new THREE.PlaneGeometry(0.6, 0.8), M('#ffffff', 0.7, 0, { map: artTexture() }), 0, 1.62, 0.037, false);
+}
 
 /* ---------- headboard wall, pillars, sconces ---------- */
 const S7 = wallGroups.S7;
@@ -501,29 +508,29 @@ phone(4.86, 7.62); bottle(5.07, 7.83);
 B(4.72, 4.88, 0.6, 0.72, 4.83, 4.96, mat.black); // clock radio
 
 /* ---------- dresser, TV ---------- */
-B(6.65, 8.5, 0, 0.08, 3.6, 4.08, mat.black);
-B(6.6, 8.55, 0.08, 0.78, 3.6, 4.15, mat.espresso);
-B(6.57, 8.58, 0.78, 0.82, 3.6, 4.2, mat.stone);
-B(7.54, 7.56, 0.1, 0.76, 4.15, 4.153, mat.groove, scene, false);
-for (const y of [0.32, 0.55]) B(6.6, 7.54, y, y + 0.012, 4.15, 4.153, mat.groove, scene, false);
-B(7.56, 8.55, 0.44, 0.452, 4.15, 4.153, mat.groove, scene, false);
-for (const [x1, x2, y] of [[6.7, 7.4, 0.7], [6.7, 7.4, 0.48], [6.7, 7.4, 0.25], [7.66, 8.45, 0.7], [7.66, 8.45, 0.37]])
+B(8.45, 10.3, 0, 0.08, 3.6, 4.08, mat.black);
+B(8.4, 10.35, 0.08, 0.78, 3.6, 4.15, mat.espresso);
+B(8.37, 10.38, 0.78, 0.82, 3.6, 4.2, mat.stone);
+B(9.34, 9.36, 0.1, 0.76, 4.15, 4.153, mat.groove, scene, false);
+for (const y of [0.32, 0.55]) B(8.4, 9.34, y, y + 0.012, 4.15, 4.153, mat.groove, scene, false);
+B(9.36, 10.35, 0.44, 0.452, 4.15, 4.153, mat.groove, scene, false);
+for (const [x1, x2, y] of [[8.5, 9.2, 0.7], [8.5, 9.2, 0.48], [8.5, 9.2, 0.25], [9.46, 10.25, 0.7], [9.46, 10.25, 0.37]])
   B(x1, x2, y, y + 0.014, 4.155, 4.175, mat.chrome);
 // coffee machine, tray, cups, bottles, lamp, sculpture
-B(6.82, 7.36, 0.82, 0.835, 3.68, 4.1, mat.glossBlack);
-B(6.86, 7.06, 0.835, 1.1, 3.72, 3.98, mat.black);
-B(6.88, 7.04, 0.85, 0.87, 3.98, 4.06, mat.chrome);
-for (const x of [7.17, 7.27]) { const cu = new THREE.Mesh(new THREE.CylinderGeometry(0.035, 0.03, 0.07, 16), mat.white); cu.position.copy(P(x, 0.87, 3.9)); scene.add(cu); }
-bottle(7.45, 3.8, 0.82); bottle(7.56, 3.86, 0.82);
-B(8.05, 8.25, 0.82, 0.835, 3.75, 3.95, mat.chrome);
-rod([8.11, 0.83, 3.85], [8.11, 1.22, 3.85], 0.007, mat.chrome);
-rod([8.19, 0.83, 3.85], [8.19, 1.22, 3.85], 0.007, mat.chrome);
+B(8.62, 9.16, 0.82, 0.835, 3.68, 4.1, mat.glossBlack);
+B(8.66, 8.86, 0.835, 1.1, 3.72, 3.98, mat.black);
+B(8.68, 8.84, 0.85, 0.87, 3.98, 4.06, mat.chrome);
+for (const x of [8.97, 9.07]) { const cu = new THREE.Mesh(new THREE.CylinderGeometry(0.035, 0.03, 0.07, 16), mat.white); cu.position.copy(P(x, 0.87, 3.9)); scene.add(cu); }
+bottle(9.25, 3.8, 0.82); bottle(9.36, 3.86, 0.82);
+B(9.85, 10.05, 0.82, 0.835, 3.75, 3.95, mat.chrome);
+rod([9.91, 0.83, 3.85], [9.91, 1.22, 3.85], 0.007, mat.chrome);
+rod([9.99, 0.83, 3.85], [9.99, 1.22, 3.85], 0.007, mat.chrome);
 {
   const shade = new THREE.Mesh(new THREE.CylinderGeometry(0.2, 0.26, 0.28, 4, 1, true), mat.glow);
-  shade.rotation.y = Math.PI / 4; shade.scale.set(1.45, 1, 0.75); shade.position.copy(P(8.15, 1.33, 3.86)); scene.add(shade);
-  const pl = new THREE.PointLight('#ffd4a0', 0.8, 4.2, 1.6); pl.position.copy(P(8.15, 1.25, 3.95)); scene.add(pl);
+  shade.rotation.y = Math.PI / 4; shade.scale.set(1.45, 1, 0.75); shade.position.copy(P(9.95, 1.33, 3.86)); scene.add(shade);
+  const pl = new THREE.PointLight('#ffd4a0', 0.8, 4.2, 1.6); pl.position.copy(P(9.95, 1.25, 3.95)); scene.add(pl);
 }
-for (let i = 0; i < 14; i++) rod([rand(6.62, 6.85), 0.83, rand(3.75, 4.0)], [rand(6.6, 6.88), rand(0.9, 1.0), rand(3.72, 4.05)], 0.006, M('#b38f4a', 0.35, 0.8));
+for (let i = 0; i < 14; i++) rod([rand(8.42, 8.65), 0.83, rand(3.75, 4.0)], [rand(8.4, 8.68), rand(0.9, 1.0), rand(3.72, 4.05)], 0.006, M('#b38f4a', 0.35, 0.8));
 
 {
   const k = 'S4', len = segInfo[k].len;
@@ -535,58 +542,58 @@ for (let i = 0; i < 14; i++) rod([rand(6.62, 6.85), 0.83, rand(3.75, 4.0)], [ran
 }
 
 /* ---------- luggage on the floor ---------- */
-B(5.92, 6.55, 0, 0.23, 3.75, 4.42, mat.suitcase);
-B(5.92, 6.55, 0.23, 0.9, 3.63, 3.7, mat.suitcase);
+B(7.62, 8.25, 0, 0.23, 3.75, 4.42, mat.suitcase);
+B(7.62, 8.25, 0.23, 0.9, 3.63, 3.7, mat.suitcase);
 const clothes = ['#9ab6cf', '#d9cab2', '#2c3452', '#1b1a1a', '#f0f0ec', '#6a2330', '#c9b48e', '#9ab6cf'];
 clothes.forEach((c, i) => {
   const m = new THREE.Mesh(new THREE.IcosahedronGeometry(0.2, 1), M(c, 0.95));
   m.scale.set(rand(0.7, 1.3), rand(0.25, 0.45), rand(0.7, 1.2));
   m.rotation.set(rand(-0.3, 0.3), rand(0, 3), rand(-0.3, 0.3));
-  m.position.copy(P(rand(5.85, 6.6), 0.2 + (i % 3) * 0.05, rand(3.8, 4.5)));
+  m.position.copy(P(rand(7.55, 8.3), 0.2 + (i % 3) * 0.05, rand(3.8, 4.5)));
   m.castShadow = m.receiveShadow = true; scene.add(m);
 });
-{ const bag = B(5.6, 5.85, 0, 0.32, 3.95, 4.12, M('#ddd0bb', 0.6)); bag.rotation.y = 0.3; }
+{ const bag = B(7.3, 7.55, 0, 0.32, 3.95, 4.12, M('#ddd0bb', 0.6)); bag.rotation.y = 0.3; }
 
 /* ---------- window corner: sofa, table, chair, lamp ---------- */
-B(7.42, 9.5, 0.05, 0.3, 7.32, 7.98, mat.sofa);
-B(7.45, 9.32, 0.3, 0.43, 7.34, 7.8, mat.sofaSeat);
-B(7.42, 9.5, 0.3, 0.84, 7.8, 7.98, mat.sofa);
-B(8.83, 9.5, 0.05, 0.3, 5.55, 7.32, mat.sofa);
-B(8.85, 9.32, 0.3, 0.43, 5.57, 7.34, mat.sofaSeat);
-B(9.32, 9.5, 0.3, 0.84, 5.55, 7.98, mat.sofa);
-B(7.3, 7.44, 0.05, 0.58, 7.32, 7.98, mat.sofa);
-B(8.83, 9.5, 0.05, 0.58, 5.42, 5.56, mat.sofa);
-{ const c = B(8.95, 9.28, 0.43, 0.76, 7.45, 7.78, M('#b0905e', 0.95)); c.rotation.set(0.15, 0.6, 0.1); }
-{ const c = B(9.0, 9.28, 0.43, 0.7, 6.0, 6.4, M('#d6cfc1', 0.95)); c.rotation.set(0.1, 0.2, -0.2); }
+B(9.22, 11.3, 0.05, 0.3, 7.32, 7.98, mat.sofa);
+B(9.25, 11.12, 0.3, 0.43, 7.34, 7.8, mat.sofaSeat);
+B(9.22, 11.3, 0.3, 0.84, 7.8, 7.98, mat.sofa);
+B(10.63, 11.3, 0.05, 0.3, 5.55, 7.32, mat.sofa);
+B(10.65, 11.12, 0.3, 0.43, 5.57, 7.34, mat.sofaSeat);
+B(11.12, 11.3, 0.3, 0.84, 5.55, 7.98, mat.sofa);
+B(9.1, 9.24, 0.05, 0.58, 7.32, 7.98, mat.sofa);
+B(10.63, 11.3, 0.05, 0.58, 5.42, 5.56, mat.sofa);
+{ const c = B(10.75, 11.08, 0.43, 0.76, 7.45, 7.78, M('#b0905e', 0.95)); c.rotation.set(0.15, 0.6, 0.1); }
+{ const c = B(10.8, 11.08, 0.43, 0.7, 6.0, 6.4, M('#d6cfc1', 0.95)); c.rotation.set(0.1, 0.2, -0.2); }
 // side table with balance-arm lamp
-B(6.75, 7.3, 0, 0.6, 7.3, 7.82, mat.walnut);
-B(6.8, 7.25, 0.08, 0.46, 7.29, 7.74, M('#26150e', 0.7), scene, false);
+B(8.55, 9.1, 0, 0.6, 7.3, 7.82, mat.walnut);
+B(8.6, 9.05, 0.08, 0.46, 7.29, 7.74, M('#26150e', 0.7), scene, false);
 {
-  const base = new THREE.Mesh(new THREE.CylinderGeometry(0.09, 0.09, 0.02, 24), mat.chrome); base.position.copy(P(6.96, 0.61, 7.6)); scene.add(base);
-  rod([6.96, 0.61, 7.6], [7.12, 1.55, 7.38], 0.009, mat.chrome);
-  rod([7.0, 0.95, 7.55], [6.82, 1.06, 7.7], 0.007, mat.chrome);
-  const ball = new THREE.Mesh(new THREE.SphereGeometry(0.05, 20, 14), mat.chrome); ball.position.copy(P(6.82, 1.06, 7.7)); scene.add(ball);
-  const shade = new THREE.Mesh(new THREE.CylinderGeometry(0.1, 0.2, 0.25, 28, 1, true), mat.glow); shade.position.copy(P(7.14, 1.5, 7.36)); scene.add(shade);
-  const pl = new THREE.PointLight('#ffdcae', 0.6, 3.5, 1.7); pl.position.copy(P(7.14, 1.42, 7.36)); scene.add(pl);
+  const base = new THREE.Mesh(new THREE.CylinderGeometry(0.09, 0.09, 0.02, 24), mat.chrome); base.position.copy(P(8.76, 0.61, 7.6)); scene.add(base);
+  rod([8.76, 0.61, 7.6], [8.92, 1.55, 7.38], 0.009, mat.chrome);
+  rod([8.8, 0.95, 7.55], [8.62, 1.06, 7.7], 0.007, mat.chrome);
+  const ball = new THREE.Mesh(new THREE.SphereGeometry(0.05, 20, 14), mat.chrome); ball.position.copy(P(8.62, 1.06, 7.7)); scene.add(ball);
+  const shade = new THREE.Mesh(new THREE.CylinderGeometry(0.1, 0.2, 0.25, 28, 1, true), mat.glow); shade.position.copy(P(8.94, 1.5, 7.36)); scene.add(shade);
+  const pl = new THREE.PointLight('#ffdcae', 0.6, 3.5, 1.7); pl.position.copy(P(8.94, 1.42, 7.36)); scene.add(pl);
 }
 // round glass table with books
 {
-  const top = new THREE.Mesh(new THREE.CylinderGeometry(0.52, 0.52, 0.022, 48), mat.glass); top.position.copy(P(8.15, 0.72, 6.7)); top.castShadow = true; scene.add(top);
-  rod([8.15, 0.14, 6.7], [8.15, 0.71, 6.7], 0.022, mat.chrome);
-  for (let i = 0; i < 4; i++) { const a = i * Math.PI / 2 + Math.PI / 4; rod([8.15, 0.15, 6.7], [8.15 + Math.cos(a) * 0.4, 0.01, 6.7 + Math.sin(a) * 0.4], 0.011, mat.chrome); }
+  const top = new THREE.Mesh(new THREE.CylinderGeometry(0.52, 0.52, 0.022, 48), mat.glass); top.position.copy(P(9.95, 0.72, 6.7)); top.castShadow = true; scene.add(top);
+  rod([9.95, 0.14, 6.7], [9.95, 0.71, 6.7], 0.022, mat.chrome);
+  for (let i = 0; i < 4; i++) { const a = i * Math.PI / 2 + Math.PI / 4; rod([9.95, 0.15, 6.7], [9.95 + Math.cos(a) * 0.4, 0.01, 6.7 + Math.sin(a) * 0.4], 0.011, mat.chrome); }
   const cols = ['#1b1b1d', '#7a1d2b', '#2a2f36', '#d9d2c4', '#3b2b4a', '#c13c6a', '#141414'];
-  const stacks = [[7.95, 6.85, 4], [8.25, 6.92, 3], [8.0, 6.5, 2]];
+  const stacks = [[9.75, 6.85, 4], [10.05, 6.92, 3], [9.8, 6.5, 2]];
   let ci = 0;
   for (const [x, z, n] of stacks) for (let j = 0; j < n; j++) {
     const b = B(x - 0.12, x + 0.12, 0.732 + j * 0.036, 0.766 + j * 0.036, z - 0.08, z + 0.08, M(cols[ci++ % cols.length], 0.6));
     b.rotation.y = rand(-0.25, 0.25);
   }
-  B(8.35, 8.52, 0.732, 0.75, 6.48, 6.52, mat.black);
-  B(8.42, 8.52, 0.732, 0.75, 6.56, 6.63, M('#5b3a26', 0.6));
+  B(10.15, 10.32, 0.732, 0.75, 6.48, 6.52, mat.black);
+  B(10.22, 10.32, 0.732, 0.75, 6.56, 6.63, M('#5b3a26', 0.6));
 }
 // tan leather tub chair facing the table
 {
-  const chair = new THREE.Group(), at = P(7.42, 0, 6.1), dir = P(8.15, 0, 6.7).sub(at);
+  const chair = new THREE.Group(), at = P(9.22, 0, 6.1), dir = P(9.95, 0, 6.7).sub(at);
   chair.position.copy(at); chair.rotation.y = Math.atan2(dir.x, dir.z); scene.add(chair);
   L(chair, new THREE.CylinderGeometry(0.3, 0.29, 0.12, 32), mat.tan, 0, 0.45, 0);
   const gap = 2.1;
@@ -598,15 +605,15 @@ B(6.8, 7.25, 0.08, 0.46, 7.29, 7.74, M('#26150e', 0.7), scene, false);
   }
 }
 // the little white puck that shows up in every photo
-{ const puck = new THREE.Mesh(new THREE.SphereGeometry(0.05, 24, 16), mat.white); puck.scale.y = 0.4; puck.position.copy(P(7.05, 0.02, 5.75)); puck.castShadow = true; scene.add(puck); }
+{ const puck = new THREE.Mesh(new THREE.SphereGeometry(0.05, 24, 16), mat.white); puck.scale.y = 0.4; puck.position.copy(P(8.05, 0.02, 5.7)); puck.castShadow = true; scene.add(puck); }
 
 /* ---------- light ---------- */
 scene.add(new THREE.HemisphereLight('#fff4e6', '#3d3229', 0.55));
 scene.add(new THREE.AmbientLight('#ffffff', 0.08));
 const sun = new THREE.DirectionalLight('#e4eef6', 0.75);
-sun.position.copy(P(14.5, 5.5, 7.5)); sun.target.position.copy(P(6.5, 0, 5.6));
+sun.position.copy(P(16.3, 5.5, 7.5)); sun.target.position.copy(P(7.4, 0, 5.6));
 sun.castShadow = true; sun.shadow.mapSize.set(2048, 2048);
-Object.assign(sun.shadow.camera, { left: -7, right: 7, top: 7, bottom: -7, near: 0.5, far: 25 });
+Object.assign(sun.shadow.camera, { left: -8, right: 8, top: 8, bottom: -8, near: 0.5, far: 25 });
 sun.shadow.bias = -0.0004; sun.shadow.normalBias = 0.02;
 scene.add(sun, sun.target);
 
@@ -615,28 +622,28 @@ const controls = new THREE.OrbitControls(camera, canvas);
 controls.enableDamping = true; controls.dampingFactor = 0.08;
 controls.minDistance = 3.5; controls.maxDistance = 24; controls.maxPolarAngle = 1.28;
 controls.autoRotate = !reduceMotion; controls.autoRotateSpeed = 0.5;
-const ORBIT_TARGET = P(5.0, 0.4, 4.6);
-let lastOrbit = { pos: P(11.2, 10.8, -4.2), target: ORBIT_TARGET.clone() };
+const ORBIT_TARGET = P(5.9, 0.4, 4.6);
+let lastOrbit = { pos: P(12.6, 11.6, -4.6), target: ORBIT_TARGET.clone() };
 camera.position.copy(lastOrbit.pos); controls.target.copy(lastOrbit.target); controls.update();
 
 const VIEWS = {
   door:    { pos: [0.52, 1.6, 0.4],  look: [0.52, 1.42, 4.6] },
-  hall:    { pos: [0.5, 1.6, 4.15],  look: [9.5, 1.15, 4.45] },
+  hall:    { pos: [0.5, 1.6, 4.15],  look: [11.3, 1.15, 4.5] },
   back:    { pos: [6.1, 1.6, 4.25],  look: [0, 1.3, 4.15] },
-  bedside: { pos: [5.15, 1.7, 4.4],  look: [9.3, 0.9, 7.7] },
-  window:  { pos: [9.05, 1.75, 4.8], look: [4.3, 1.05, 6.25] },
+  bedside: { pos: [5.15, 1.7, 4.4],  look: [11.1, 0.9, 7.7] },
+  window:  { pos: [10.85, 1.75, 4.8], look: [4.3, 1.0, 6.4] },
 };
 
 const EYE = 1.6;
-const zones = [[0.22, 0.83, 0.25, 4.48], [0.22, 4.62, 3.82, 4.48], [4.5, 9.28, 3.82, 7.78]];
+const zones = [[0.22, 0.83, 0.25, 4.48], [0.22, 4.62, 3.82, 4.48], [4.5, 11.08, 3.82, 7.78]];
 const obstacles = [
   [4.4, 6.7, 5.3, 7.4], [6.75, 7.3, 5.5, 7.2], [4.65, 5.17, 4.78, 5.32], [4.65, 5.17, 7.4, 7.94],
-  [6.55, 8.6, 3.6, 4.22], [5.55, 6.6, 3.6, 4.5], [7.3, 9.5, 7.3, 8], [8.8, 9.5, 5.4, 8],
-  [7.65, 8.65, 6.2, 7.2], [7.1, 7.75, 5.8, 6.4], [6.75, 7.3, 7.3, 8], [4.3, 4.62, 4.55, 5.25], [4.3, 4.62, 7.45, 8],
+  [8.35, 10.4, 3.6, 4.22], [7.25, 8.3, 3.6, 4.5], [9.1, 11.3, 7.3, 8], [10.6, 11.3, 5.4, 8],
+  [9.45, 10.45, 6.2, 7.2], [8.9, 9.55, 5.8, 6.4], [8.55, 9.1, 7.3, 8], [4.3, 4.62, 4.55, 5.25], [4.3, 4.62, 7.45, 8],
 ];
 function walkable(x, z) {
   if (!zones.some(([a, b, c, d]) => x >= a && x <= b && z >= c && z <= d)) return false;
-  if (x - z > 4.8) return false;
+  if (x - z > 6.6) return false;
   return !obstacles.some(([a, b, c, d]) => x > a - 0.2 && x < b + 0.2 && z > c - 0.2 && z < d + 0.2);
 }
 
