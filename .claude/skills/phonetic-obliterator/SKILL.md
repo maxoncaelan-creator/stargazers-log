@@ -1,7 +1,7 @@
 ---
 name: phonetic-obliterator
-description: SEO-safe phoneme reduction. Finds the best search keywords already in a text with DataForSEO, locks those phrases, then rewrites everything else to cut its phoneme count by a set level (low 20%, medium 40%, high 60%), checked with CMU Pronouncing Dictionary counts. Use when the user asks to "phonetically obliterate" a text, cut its phonemes while keeping keywords, or invokes /phonetic-obliterator. Arguments are the level (low, medium or high; default high), optional "whimsy", optional location (default United States), and the text.
-argument-hint: "[low|medium|high] [whimsy] [location] <text>"
+description: SEO-safe phoneme reduction. Finds the best search keywords already in a text with DataForSEO, locks those phrases, then rewrites everything else to cut its phoneme count by a set level (low 20%, medium 40%, high 60%), checked with CMU Pronouncing Dictionary counts, in a chosen style (none, clean, corporate, moody, emo-metal, lusty, whimsy, or auto, which detects the text's style and records a new one if none fits). Use when the user asks to "phonetically obliterate" a text, cut its phonemes while keeping keywords, or invokes /phonetic-obliterator. Arguments are the level (default high), the style (default auto), an optional location (default United States), and the text.
+argument-hint: "[low|medium|high] [none|clean|corporate|moody|emo-metal|lusty|whimsy|auto|<recorded style>] [location] <text>"
 ---
 
 # Phonetic Obliterator
@@ -23,7 +23,7 @@ The counter is `scripts/phonemes.py` in this skill's folder (`.claude/skills/pho
 1. Run `python3 -c "import cmudict"`. If that fails, run `pip install cmudict`.
 2. Parse the arguments:
    - **Level:** low, medium or high. The default is high.
-   - **Whimsy:** apply it if the word appears.
+   - **Style:** any style name in `styles.md` (in this skill's folder), or `auto`. The default is `auto`. Match loosely: "emo metal" means `emo-metal`, and "no style" or "plain" means `none`. If the user names a style that isn't in the registry, treat it as an auto-recorded style using the name they gave (see "Auto style").
    - **Location:** default United States (`location_code` 2840, `language_code` "en").
    - **Text:** the rest of the arguments, or what the user pasted. If no text is given, ask for it.
 3. Split off the parts that should not be counted or changed: headers (e.g. "🪰 DID YOU KNOW?"), sign-offs/bylines (e.g. a brand name at the end), emojis and hashtags. Keep them as they are and put them back at the end.
@@ -69,7 +69,7 @@ Rewrite the body to fit the budget:
 - **Facts:** keep the core facts and the main point. Drop filler, hedges and repeated ideas first.
 - **Cheap words:** prefer words with fewer phonemes ("seen" over "noticed", "spin" over "reversing"). Contractions help.
 - **Rhythm:** keep it readable and natural, never a word list.
-- **Whimsy (if requested):** get it from word choice ("twirl", "dizzy love waltz", "a lady drops by"), not from added length. It has to fit the same budget.
+- **Style:** read the style's entry in `styles.md` and follow its Voice, Do and Avoid. Get the style from word choice, not added length; it has to fit the same budget. A style never overrides locks or facts.
 - **Specific words the user asks to keep:** treat them as extra locks and add a `--lock` for each.
 
 Write the draft to `candidate.txt`, then run:
@@ -80,18 +80,39 @@ python3 phonemes.py check original.txt candidate.txt --level <level> --lock ... 
 
 If the result is FAIL, edit the draft and run the check again. Cut more when the reduction is under target; add words back when it is over. Repeat until it prints PASS (within ±3 points of target). Stop after 6 tries and report the closest version.
 
+## Auto style
+
+Use this when the style is `auto`, or when the user names a style that isn't in the registry.
+
+1. **Read the original's voice.** Look at its tone, audience, register, emoji use, sentence rhythm and signature phrases.
+2. **Match it.** Compare against every entry in `styles.md`, including auto-recorded ones.
+   - If one fits cleanly (its Voice describes the text, and nothing in the text breaks its Avoid list), use it. Say "Auto style: <name>" and give a one-line reason.
+   - If none fits cleanly, **determine the style** yourself:
+     - Give it a short kebab-case name, e.g. `cosy-naturalist`, with a Voice, Do and Avoid that describe this text.
+     - Add a Sample line from the rewritten text.
+     - Add a `Recorded:` line with today's date and a few words on the source.
+   - If the user named an unknown style, build the entry from their name and intent instead of from the text.
+3. **Record it.** Append the new entry under the `AUTO-RECORDED STYLES` marker at the bottom of `styles.md`.
+   - Never edit or delete existing entries while recording.
+   - Tell the user it was recorded and show the entry.
+   - If the skill is in a git repo, offer to commit it. Recorded styles are lost when a cloud session ends unless committed.
+4. Rewrite in the chosen or recorded style as in Step 4.
+
+A recorded style can be used by name in later runs, e.g. `/phonetic-obliterator medium cosy-naturalist <text>`.
+
 ## Step 5: Output
 
 1. The final text, with header, emojis and sign-off put back. Mark locked phrases with 🔒 and bold **only** in the preview. Also give a clean, copy-ready version with no markers.
-2. Stats:
+2. The style used, saying whether you chose it automatically and whether it was newly recorded.
+3. Stats:
    - original phonemes = locked + unlocked
    - new phonemes = locked + unlocked
    - reduction of unlocked phonemes (the level target)
    - overall reduction
-3. The keyword table from Step 2.
-4. Things to flag:
+4. The keyword table from Step 2.
+5. Things to flag:
    - **Unused high-volume keywords:** ones that weren't in the text and so couldn't be locked. Offer to work them in.
    - **Exact-match tradeoffs:** places where the locked wording differs from the searched keyword, and switching would mean changing a lock.
    - **Location:** say which one was used.
    - **Pronunciation:** CMUdict uses one General American pronunciation per word, so other accents change counts slightly.
-5. Point to the IPA transcriptions of both versions (`count --ipa`) in the scratchpad. Give full absolute paths.
+6. Point to the IPA transcriptions of both versions (`count --ipa`) in the scratchpad. Give full absolute paths.
