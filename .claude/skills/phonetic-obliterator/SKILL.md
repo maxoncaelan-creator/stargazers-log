@@ -37,7 +37,21 @@ Run `python3 phonemes.py count original.txt --ipa`. This prints every word with 
 
 ## Step 2: Keyword research (DataForSEO)
 
-Load the DataForSEO tool through ToolSearch (`select:mcp__DataForSEO__api_request`) if it isn't loaded yet. If DataForSEO is unavailable or needs sign-in, tell the user. Offer to continue with no locks, or with phrases they choose. Don't make up search volumes.
+### 2a. DataForSEO check (always run this first)
+
+Find out whether the user has a working DataForSEO connection before any keyword work:
+
+1. **Look for the tool.** Run ToolSearch with `select:mcp__DataForSEO__api_request`. If nothing is found, search for `dataforseo` too, since the tool may be under a plugin prefix or still connecting.
+2. **Test the account.** If the tool loads, call it with `method: "GET"`, `path: "/v3/appendix/user_data"`. This is a free account lookup. It passes only if the response has `status_code` 20000.
+3. **Decide:**
+   - **PASS:** continue with Step 2b.
+   - **FAIL:** skip Step 2b and **continue without keyword locks**. Failing means the tool wasn't found, the server needs sign-in or failed to connect, the call errored, or the `status_code` wasn't 20000.
+     - Don't stop to ask, and don't make up search volumes.
+     - Use no `--lock` flags in Steps 3 and 4, so the level's reduction applies to the whole text.
+     - In the output, say "DataForSEO check: not available (<reason>). No keywords were locked." Mention that connecting DataForSEO adds keyword locks on the next run.
+     - If the user names phrases to keep anyway, lock those as user locks. Don't present them as SEO keywords.
+
+### 2b. Keyword research (only if the check passed)
 
 1. **Make candidates.** Pick 15–25 search phrases that someone looking for this text's content might type. Include:
    - Phrases taken from the text, normalized to how people search. "lesser houseflies" becomes "lesser house fly"; "attracted to the light" becomes "flies attracted to light".
@@ -109,7 +123,7 @@ A recorded style can be used by name in later runs, e.g. `/phonetic-obliterator 
    - new phonemes = locked + unlocked
    - reduction of unlocked phonemes (the level target)
    - overall reduction
-4. The keyword table from Step 2.
+4. The result of the DataForSEO check (passed, or not available with the reason), then the keyword table from Step 2b. If there was no check pass, say no keywords were locked.
 5. Things to flag:
    - **Unused high-volume keywords:** ones that weren't in the text and so couldn't be locked. Offer to work them in.
    - **Exact-match tradeoffs:** places where the locked wording differs from the searched keyword, and switching would mean changing a lock.
